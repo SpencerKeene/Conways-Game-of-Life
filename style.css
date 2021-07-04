@@ -1,0 +1,17 @@
+body {
+  margin: 0;
+}
+
+.gameboard {
+  display: grid;
+}
+
+.cell {
+  border: 1px solid black;
+  border-radius: 1px;
+  background-color: black;
+}
+
+.cell.alive {
+  background-color: white;
+}
