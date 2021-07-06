@@ -5,16 +5,16 @@ export default class GameOfLife {
     this.ROWS = Math.floor(window.innerHeight / CELL_SIZE);
     this.COLS = Math.floor(window.innerWidth / CELL_SIZE);
 
-    this.#setupStyle();
+    this.setupStyle();
 
-    this.#createGameboard();
+    this.createGameboard();
 
     this.previousGens = [];
-    this.currentGen = this.#make2dArray(this.ROWS, this.COLS);
-    this.#randomizeBoard();
+    this.currentGen = this.make2dArray(this.ROWS, this.COLS);
+    this.randomizeBoard();
   }
 
-  #make2dArray(rows, cols) {
+  make2dArray(rows, cols) {
     const array = new Array(rows);
     for (let i = 0; i < rows; i++) {
       array[i] = new Array(cols);
@@ -22,7 +22,7 @@ export default class GameOfLife {
     return array;
   }
 
-  #setupStyle() {
+  setupStyle() {
     const style = document.createElement("style");
     document.head.append(style);
     style.sheet.insertRule(`
@@ -36,7 +36,7 @@ export default class GameOfLife {
       }`);
   }
 
-  #randomizeBoard(alivePercentage = 50) {
+  randomizeBoard(alivePercentage = 50) {
     for (let i = 0; i < this.ROWS; i++) {
       for (let j = 0; j < this.COLS; j++) {
         this.currentGen[i][j] = Math.random() * 100 < alivePercentage;
@@ -44,7 +44,7 @@ export default class GameOfLife {
     }
   }
 
-  #createGameboard() {
+  createGameboard() {
     this.gameboard = document.createElement("div");
     this.gameboard.classList.add("gameboard");
 
@@ -59,7 +59,7 @@ export default class GameOfLife {
     }
   }
 
-  #countNeighbours(x, y) {
+  countNeighbours(x, y) {
     let sum = 0;
     for (let i = -1; i <= 1; i++) {
       for (let j = -1; j <= 1; j++) {
@@ -79,7 +79,7 @@ export default class GameOfLife {
     return sum;
   }
 
-  #render() {
+  render() {
     let i = 0;
     let j = 0;
     const children = this.gameboard.childNodes;
@@ -107,13 +107,13 @@ export default class GameOfLife {
     this.previousGens.push(this.currentGen);
     this.currentGen = this.currentGen.map((row, x) => {
       return row.map((alive, y) => {
-        const n = this.#countNeighbours(x, y);
+        const n = this.countNeighbours(x, y);
         if (alive && (n < 2 || n > 3)) return 0;
         if (!alive && n === 3) return 1;
         return alive;
       });
     });
-    this.#render();
+    this.render();
   }
 
   previousGeneration() {
@@ -122,6 +122,6 @@ export default class GameOfLife {
       return;
     }
     this.currentGen = this.previousGens.pop();
-    this.#render();
+    this.render();
   }
 }
